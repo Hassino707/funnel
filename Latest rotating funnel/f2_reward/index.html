@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Please wait...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<h2>Verifying your access...</h2>
+
+<script>
+let subid = new URLSearchParams(window.location.search).get("subid") || "default";
+
+setTimeout(()=>{
+  window.location.href="page2.html?subid="+subid;
+},1500);
+</script>
+
+</body>
+</html>

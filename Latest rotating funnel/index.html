@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Loading...</title>
+</head>
+
+<body>
+
+<script>
+// 🔥 Weighted rotation
+let paths = [
+  "f1_trending/index.html",
+  "f1_trending/index.html",
+  "f1_trending/index.html",
+  "f2_reward/index.html",
+  "f3_security/index.html"
+];
+
+// get subid
+let subid = new URLSearchParams(window.location.search).get("subid") || "default";
+
+// pick random
+let path = paths[Math.floor(Math.random() * paths.length)];
+
+// redirect
+window.location.href = path + "?subid=" + subid;
+</script>
+
+</body>
+</html>

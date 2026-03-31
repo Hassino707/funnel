@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Optimizing your connection...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  background:#0d0d0d;
+  font-family:Arial, sans-serif;
+  color:#fff;
+  text-align:center;
+}
+
+.container{
+  padding:40px 20px;
+}
+
+.box{
+  background:#1a1a1a;
+  padding:25px;
+  border-radius:12px;
+  max-width:350px;
+  margin:auto;
+  box-shadow:0 0 15px rgba(0,0,0,0.5);
+}
+
+h2{
+  font-size:20px;
+}
+
+.progress-bar{
+  width:100%;
+  height:8px;
+  background:#333;
+  border-radius:5px;
+  overflow:hidden;
+  margin:20px 0;
+}
+
+.progress{
+  height:100%;
+  width:0%;
+  background:#00ff99;
+  transition:width 0.3s;
+}
+
+button{
+  background:#00cc66;
+  color:#fff;
+  border:none;
+  padding:14px 25px;
+  font-size:16px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+button:disabled{
+  background:#555;
+  cursor:not-allowed;
+}
+
+button:hover{
+  background:#00aa55;
+}
+
+.small{
+  font-size:12px;
+  color:#888;
+  margin-top:10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+  <div class="box">
+<h2 id="text">Optimizing your connection...</h2>
+
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+<button id="btn">CONTINUE</button>
+
+    <div class="small">Please wait while we prepare your content...</div>
+
+  </div>
+</div>
+
+<script>
+
+// ✅ GET SUBID
+let subid = new URLSearchParams(window.location.search).get("subid") || "default";
+
+// ✅ PUT YOUR REAL MONETAG LINK HERE
+let selectedOffer = "https://omg10.com/4/10798487?subid=f3_" + subid;
+
+// ✅ ELEMENTS
+let progress = 0;
+let bar = document.getElementById("progress");
+let text = document.getElementById("text");
+let btn = document.getElementById("btn");
+
+// ✅ DISABLE BUTTON INITIALLY
+btn.disabled = true;
+
+// ✅ PROGRESS (FAST)
+let interval = setInterval(() => {
+  progress += Math.random() * 20 + 10;
+
+  if(progress >= 100){
+    progress = 100;
+    clearInterval(interval);
+text.innerHTML = "Ready ✔ Tap continue to proceed";
+    btn.disabled = false;
+  }
+
+  bar.style.width = progress + "%";
+}, 300);
+
+// ✅ REDIRECT FUNCTION
+let redirected = false;
+
+function go(){
+  if(redirected) return;
+  redirected = true;
+window.location.replace(selectedOffer);
+}
+
+// ✅ BUTTON CLICK
+btn.addEventListener("click", go);
+
+// ✅ AUTO REDIRECT BACKUP (6s)
+setTimeout(go, 5000);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Loading...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<h2>Checking your reward...</h2>
+<button onclick="go()">Continue</button>
+
+<script>
+function go(){
+  let subid = new URLSearchParams(window.location.search).get("subid") || "default";
+  window.location.href="page3.html?subid="+subid;
+}
+</script>
+
+</body>
+</html>

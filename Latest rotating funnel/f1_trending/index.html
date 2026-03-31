@@ -1,0 +1,5 @@
+<h2>Loading trending videos...</h2>
+<script>
+let subid = new URLSearchParams(window.location.search).get("subid") || "default";
+setTimeout(()=>{window.location.href="page2.html?subid="+subid;},1500);
+</script>

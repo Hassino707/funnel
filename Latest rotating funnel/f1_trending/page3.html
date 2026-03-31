@@ -1,0 +1,10 @@
+<h2>This video is trending in your area 🔥
+</h2>
+<button onclick="go()">WATCH NOW</button>
+
+<script>
+function go(){
+let subid = new URLSearchParams(window.location.search).get("subid") || "default";
+window.location.href="page4.html?subid="+subid;
+}
+</script>
