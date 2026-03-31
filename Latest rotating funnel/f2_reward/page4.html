@@ -1,21 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Redirecting...</title>
+<title>Congratulations</title>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  background:#0d0d0d;
+  font-family:Arial;
+  color:#fff;
+  text-align:center;
+}
+
+.container{padding:50px 20px;}
+
+.box{
+  background:#1a1a1a;
+  padding:25px;
+  border-radius:12px;
+  max-width:350px;
+  margin:auto;
+}
+
+.small{
+  color:#aaa;
+  font-size:13px;
+  margin:15px 0;
+}
+
+button{
+  background:#00cc66;
+  color:#fff;
+  border:none;
+  padding:14px 25px;
+  font-size:16px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#00aa55;
+}
+</style>
 </head>
 
 <body>
 
+<div class="container">
+<div class="box">
+
+<h2>You’ve been selected 🎁</h2>
+
+<div class="small">
+Limited rewards remaining — claim yours now
+</div>
+
+<button onclick="go()">CLAIM NOW</button>
+
+</div>
+</div>
+
 <script>
-let subid = new URLSearchParams(window.location.search).get("subid") || "default";
-
 function go(){
-  window.location.replace("https://omg10.com/4/10798487?subid=f2_" + subid);
+let subid = new URLSearchParams(window.location.search).get("subid") || "default";
+window.location.href="page4.html?subid="+subid;
 }
-
-go();
-setTimeout(go, 2000);
 </script>
 
 </body>
