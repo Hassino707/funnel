@@ -2,28 +2,30 @@
 <html>
 <head>
 <title>Loading...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
 <script>
-// 🔥 Weighted rotation
+// 🔥 WEIGHTED ROTATION (60% F1, 20% F2, 20% F3)
 let paths = [
-  "f1_trending/index.html",
-  "f1_trending/index.html",
-  "f1_trending/index.html",
-  "f2_reward/index.html",
-  "f3_security/index.html"
+  "/f1_trending/",
+  "/f1_trending/",
+  "/f1_trending/",
+  "/f2_reward/",
+  "/f3_security/"
 ];
 
-// get subid
+// ✅ GET SUBID
 let subid = new URLSearchParams(window.location.search).get("subid") || "default";
 
-// pick random
+// 🔥 PICK RANDOM FUNNEL
 let path = paths[Math.floor(Math.random() * paths.length)];
 
-// redirect
-window.location.href = path + "?subid=" + subid;
+// ✅ REDIRECT (BEST METHOD)
+window.location.replace(path + "?subid=" + subid);
+
 </script>
 
 </body>
