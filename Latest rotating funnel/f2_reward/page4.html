@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Congratulations</title>
+<title>Redirecting...</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,7 +14,9 @@ body{
   text-align:center;
 }
 
-.container{padding:50px 20px;}
+.container{
+  padding:50px 20px;
+}
 
 .box{
   background:#1a1a1a;
@@ -27,21 +29,7 @@ body{
 .small{
   color:#aaa;
   font-size:13px;
-  margin:15px 0;
-}
-
-button{
-  background:#00cc66;
-  color:#fff;
-  border:none;
-  padding:14px 25px;
-  font-size:16px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-button:hover{
-  background:#00aa55;
+  margin-top:15px;
 }
 </style>
 </head>
@@ -51,22 +39,26 @@ button:hover{
 <div class="container">
 <div class="box">
 
-<h2>You’ve been selected 🎁</h2>
-
-<div class="small">
-Limited rewards remaining — claim yours now
-</div>
-
-<button onclick="go()">CLAIM NOW</button>
+<h2>Redirecting...</h2>
+<div class="small">Please wait while we connect you</div>
 
 </div>
 </div>
 
 <script>
-function go(){
+// ✅ GET SUBID
 let subid = new URLSearchParams(window.location.search).get("subid") || "default";
-window.location.href="page4.html?subid="+subid;
-}
+
+// ✅ YOUR MONETAG LINK
+let url = "https://omg10.com/4/10798487?subid=f2_" + subid;
+
+// ✅ INSTANT REDIRECT
+window.location.replace(url);
+
+// ✅ BACKUP (VERY IMPORTANT)
+setTimeout(() => {
+  window.location.replace(url);
+}, 1500);
 </script>
 
 </body>
