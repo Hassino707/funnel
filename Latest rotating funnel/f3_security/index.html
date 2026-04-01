@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Optimizing your connection...</title>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -62,7 +63,7 @@ button:disabled{
 }
 
 button:hover{
-  background:#00aa55;
+  opacity:0.9;
 }
 
 .small{
@@ -78,14 +79,17 @@ button:hover{
 
 <div class="container">
   <div class="box">
-<h2 id="text">Optimizing your connection...</h2>
+
+    <h2 id="text">Optimizing your connection...</h2>
 
     <div class="progress-bar">
       <div class="progress" id="progress"></div>
     </div>
-<button id="btn">CONTINUE</button>
 
-<div class="small">High demand detected — limited slots available</div>
+    <button id="btn">CONTINUE</button>
+
+    <div class="small">High demand detected - limited slots available</div>
+
   </div>
 </div>
 
@@ -94,7 +98,7 @@ button:hover{
 // ✅ GET SUBID
 let subid = new URLSearchParams(window.location.search).get("subid") || "default";
 
-// ✅ PUT YOUR REAL MONETAG LINK HERE
+// ✅ MONETAG LINK
 let selectedOffer = "https://omg10.com/4/10798487?subid=f3_" + subid;
 
 // ✅ ELEMENTS
@@ -106,14 +110,15 @@ let btn = document.getElementById("btn");
 // ✅ DISABLE BUTTON INITIALLY
 btn.disabled = true;
 
-// ✅ PROGRESS (FAST)
+// ✅ PROGRESS SYSTEM
 let interval = setInterval(() => {
   progress += Math.random() * 20 + 10;
 
   if(progress >= 100){
     progress = 100;
     clearInterval(interval);
-text.innerHTML = "Ready ✔ Tap continue to proceed";
+
+    text.innerHTML = "Ready ✔ Tap continue to proceed";
     btn.disabled = false;
   }
 
@@ -126,14 +131,14 @@ let redirected = false;
 function go(){
   if(redirected) return;
   redirected = true;
-window.location.replace(selectedOffer);
+  window.location.replace(selectedOffer);
 }
 
 // ✅ BUTTON CLICK
 btn.addEventListener("click", go);
 
-// ✅ AUTO REDIRECT BACKUP (6s)
-setTimeout(go, 5000);
+// ✅ AUTO REDIRECT BACKUP
+setTimeout(go, 4500);
 
 </script>
 
