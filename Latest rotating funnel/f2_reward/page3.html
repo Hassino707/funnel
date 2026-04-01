@@ -14,7 +14,9 @@ body{
   text-align:center;
 }
 
-.container{padding:50px 20px;}
+.container{
+  padding:50px 20px;
+}
 
 .box{
   background:#1a1a1a;
@@ -31,7 +33,7 @@ body{
 }
 
 button{
-  background:#00cc66;
+  background: linear-gradient(45deg, #00ff99, #00cc66);
   color:#fff;
   border:none;
   padding:14px 25px;
@@ -41,7 +43,7 @@ button{
 }
 
 button:hover{
-  background:#00aa55;
+  opacity:0.9;
 }
 </style>
 </head>
@@ -54,7 +56,7 @@ button:hover{
 <h2>You’ve been selected 🎁</h2>
 
 <div class="small">
-Limited rewards remaining — claim yours now
+Limited rewards remaining - claim yours now
 </div>
 
 <button onclick="go()">CLAIM NOW</button>
@@ -64,8 +66,8 @@ Limited rewards remaining — claim yours now
 
 <script>
 function go(){
-let subid = new URLSearchParams(window.location.search).get("subid") || "default";
-window.location.href="page4.html?subid="+subid;
+  let subid = new URLSearchParams(window.location.search).get("subid") || "default";
+  window.location.href = "page4.html?subid=" + subid;
 }
 </script>
 
