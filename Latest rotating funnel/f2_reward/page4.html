@@ -1,15 +1,16 @@
 <script>
-// GET SUBID
 let subid = new URLSearchParams(window.location.search).get("subid") || "default";
 
-// YOUR MONETAG LINK
+// YOUR FINAL OFFER LINK (same as page4)
 let url = "https://omg10.com/4/10798487?subid=f2_" + subid;
 
-// REDIRECT
-window.location.replace(url);
-
-// BACKUP (VERY IMPORTANT)
+// 🔥 AUTO REDIRECT (fast)
 setTimeout(() => {
-  window.location.replace(url);
-}, 1500);
+  window.location.href = url;
+}, 1200);
+
+// 🔥 BUTTON (fallback / user-trigger)
+function go(){
+  window.location.href = url;
+}
 </script>
