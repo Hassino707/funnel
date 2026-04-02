@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Loading...</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  background:#0d0d0d;
+  font-family:Arial, sans-serif;
+  color:#fff;
+  text-align:center;
+}
+
+.container{
+  padding:50px 20px;
+}
+
+.box{
+  background:#1a1a1a;
+  padding:25px;
+  border-radius:12px;
+  max-width:350px;
+  margin:auto;
+  box-shadow:0 0 15px rgba(0,0,0,0.5);
+}
+
+h2{
+  font-size:20px;
+}
+
+.small{
+  font-size:13px;
+  color:#aaa;
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="box">
+
+    <h2>Loading trending videos...</h2>
+    <div class="small">Please wait while we fetch popular content</div>
+
+  </div>
+</div>
+
+<script>
+let subid = new URLSearchParams(window.location.search).get("subid") || "default";
+
+setTimeout(() => {
+  window.location.href = "page2.html?subid=" + subid;
+}, 1800);
+</script>
+
+</body>
+</html>
