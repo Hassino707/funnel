@@ -1,32 +1,632 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Loading...</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalist E-Commerce Store</title>
+    <style>
+        :root {
+            --primary: #111111;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --bg: #f9fafb;
+            --card-bg: #ffffff;
+            --text: #1f2937;
+            --text-muted: #4b5563;
+            --border: #e5e7eb;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding-bottom: 60px;
+        }
+
+        /* Header Navigation */
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .cart-icon-btn {
+            background: none;
+            border: none;
+            position: relative;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-icon-btn svg {
+            width: 28px;
+            height: 28px;
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 2;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--accent);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        .cart-count.bump {
+            transform: scale(1.2);
+        }
+
+        /* Main Layout */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .store-title {
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .image-container {
+            width: 100%;
+            height: 320px;
+            background-color: #f3f4f6;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-top: auto;
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #333333;
+        }
+
+        /* Cart Sidebar Drawer */
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100%;
+            background-color: var(--card-bg);
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+            transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-width: 480px) {
+            .cart-drawer {
+                width: 100%;
+                right: -100%;
+            }
+        }
+
+        .cart-drawer.open {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .close-cart-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .cart-items-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .empty-cart-message {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 3rem;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+
+        .cart-item-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 4px;
+            background-color: #f3f4f6;
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .cart-item-price {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .qty-btn {
+            background-color: #f3f4f6;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            background-color: #e5e7eb;
+        }
+
+        .remove-item-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-left: auto;
+            padding: 4px;
+        }
+
+        .cart-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            background-color: #f9fafb;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .total-row {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .checkout-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .checkout-btn:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        /* Overlay backdrop */
+        .backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 90;
+            display: none;
+        }
+
+        .backdrop.open {
+            display: block;
+        }
+    </style>
+</head>
 <body>
 
-<script>
-// 🔥 WEIGHTED ROTATION (60% F1, 20% F2, 20% F3)
-let paths = [
-  "/f1_trending/",
-  "/f1_trending/",
-  "/f1_trending/",
-  "/f2_reward/",
-  "/f3_security/"
-];
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">URBAN.</a>
+            <button class="cart-icon-btn" id="cartToggle" aria-label="Open Cart">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="cart-count" id="cartCount">0</div>
+            </button>
+        </div>
+    </header>
 
-// ✅ GET SUBID
-let subid = new URLSearchParams(window.location.search).get("subid") || "default";
+    <!-- Main Storefront Content -->
+    <main>
+        <h1 class="store-title">Featured Products</h1>
+        <div class="product-grid" id="productGrid"></div>
+    </main>
 
-// 🔥 PICK RANDOM FUNNEL
-let path = paths[Math.floor(Math.random() * paths.length)];
+    <!-- Backdrop Overlay -->
+    <div class="backdrop" id="backdrop"></div>
 
-// ✅ REDIRECT (BEST METHOD)
-window.location.replace(path + "?subid=" + subid);
+    <!-- Shopping Cart Drawer -->
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="close-cart-btn" id="closeCart">&times;</button>
+        </div>
+        
+        <div class="cart-items-container" id="cartItems">
+            <!-- Dynamic elements will insert here via JavaScript -->
+        </div>
 
-</script>
+        <div class="cart-footer">
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="subtotalPrice">$0.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Estimated Shipping</span>
+                <span id="shippingPrice">$0.00</span>
+            </div>
+            <div class="summary-row total-row">
+                <span>Total</span>
+                <span id="totalPrice">$0.00</span>
+            </div>
+            <button class="checkout-btn" id="checkoutBtn" disabled>Proceed to Checkout</button>
+        </div>
+    </div>
 
+    <!-- Script Handling Data Structure and DOM Manipulation -->
+    <script>
+        // High-quality, reliable, open-source product imagery via Unsplash
+        const products = [
+            {
+                id: 1,
+                name: "Minimalist Leather Backpack",
+                category: "Accessories",
+                price: 120.00,
+                image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&q=80"
+            },
+            {
+                id: 2,
+                name: "Classic Leather Chronograph",
+                category: "Accessories",
+                price: 185.00,
+                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80"
+            },
+            {
+                id: 3,
+                name: "Premium Wireless Headphones",
+                category: "Electronics",
+                price: 299.00,
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80"
+            },
+            {
+                id: 4,
+                name: "Heritage Denim Jacket",
+                category: "Apparel",
+                price: 95.00,
+                image: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=500&q=80"
+            },
+            {
+                id: 5,
+                name: "Suede Chelsea Boots",
+                category: "Footwear",
+                price: 160.00,
+                image: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?w=500&q=80"
+            },
+            {
+                id: 6,
+                name: "Matte Ceramic Coffee Mug",
+                category: "Home Goods",
+                price: 24.00,
+                image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500&q=80"
+            }
+        ];
+
+        // Central Application State
+        let cart = [];
+
+        // DOM Elements
+        const productGrid = document.getElementById('productGrid');
+        const cartDrawer = document.getElementById('cartDrawer');
+        const backdrop = document.getElementById('backdrop');
+        const cartToggle = document.getElementById('cartToggle');
+        const closeCart = document.getElementById('closeCart');
+        const cartItemsContainer = document.getElementById('cartItems');
+        const cartCountBadge = document.getElementById('cartCount');
+        const subtotalElement = document.getElementById('subtotalPrice');
+        const shippingElement = document.getElementById('shippingPrice');
+        const totalElement = document.getElementById('totalPrice');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+
+        // Render Product Catalog Array dynamically to Page Grid
+        function renderProducts() {
+            productGrid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="image-container">
+                        <img src="${product.image}" alt="${product.name}" class="product-image" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">${product.category}</span>
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-price">$${product.price.toFixed(2)}</div>
+                        <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Cart Actions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartUI();
+            triggerBadgeAnimation();
+            openCartDrawer();
+        }
+
+        function changeQuantity(productId, amount) {
+            const item = cart.find(item => item.id === productId);
+            if (!item) return;
+
+            item.quantity += amount;
+
+            if (item.quantity <= 0) {
+                removeFromCart(productId);
+            } else {
+                updateCartUI();
+            }
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        // Calculation Engine & UI Rendering updates
+        function updateCartUI() {
+            // Count total items
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCountBadge.textContent = totalItems;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `<p class="empty-cart-message">Your shopping cart is empty.</p>`;
+                subtotalElement.textContent = "$0.00";
+                shippingElement.textContent = "$0.00";
+                totalElement.textContent = "$0.00";
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            // Calculate Ledger Totals
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const shipping = subtotal > 150 || subtotal === 0 ? 0.00 : 15.00; // Free shipping over $150
+            const total = subtotal + shipping;
+
+            // Render Item rows
+            cartItemsContainer.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+                    <div class="cart-item-details">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="qty-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                    <button class="remove-item-btn" onclick="removeFromCart(${item.id})">Remove</button>
+                </div>
+            `).join('');
+
+            // Update Text Nodes
+            subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+            shippingElement.textContent = shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`;
+            totalElement.textContent = `$${total.toFixed(2)}`;
+            checkoutBtn.disabled = false;
+        }
+
+        // Interface UX / Utility Interactions
+        function openCartDrawer() {
+            cartDrawer.classList.add('open');
+            backdrop.classList.add('open');
+        }
+
+        function closeCartDrawer() {
+            cartDrawer.classList.remove('open');
+            backdrop.classList.remove('open');
+        }
+
+        function triggerBadgeAnimation() {
+            cartCountBadge.classList.add('bump');
+            setTimeout(() => cartCountBadge.classList.remove('bump'), 200);
+        }
+
+        // Event Hook Attachments
+        cartToggle.addEventListener('click', openCartDrawer);
+        closeCart.addEventListener('click', closeCartDrawer);
+        backdrop.addEventListener('click', closeCartDrawer);
+        
+        checkoutBtn.addEventListener('click', () => {
+            alert("Thank you! Order processing simulator completed successfully.");
+            cart = [];
+            updateCartUI();
+            closeCartDrawer();
+        });
+
+        // Initialize App UI Execution
+        renderProducts();
+        updateCartUI();
+    </script>
 </body>
 </html>
